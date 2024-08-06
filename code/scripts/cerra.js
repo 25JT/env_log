@@ -3,16 +3,20 @@ import { auth } from './conexion.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM cargado");
-    const logout = document.querySelector('#cerrar');
 
-    if (logout) {
+    const logoutButton = document.querySelector('#cerrar');
+
+    if (logoutButton) {
         console.log("Botón de cerrar sesión encontrado");
-        logout.addEventListener('click', async () => {
+
+        logoutButton.addEventListener('click', async () => {
             console.log("Botón de cerrar sesión clicado");
+
             try {
                 await signOut(auth);
-                console.log("salio");
-                window.location.href = "index.html";
+                console.log("Sesión cerrada exitosamente");
+                localStorage.removeItem('authCredentials'); //borrar credenciales
+                window.location.href = "index.html"; // Redirige a la página de inicio de sesión
             } catch (error) {
                 console.error("Error al cerrar sesión:", error);
             }
