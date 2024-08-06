@@ -1,5 +1,5 @@
+import { db, doc, setDoc, getDoc } from "./conexion.js";
 
-import { db, addDoc, collection,auth, setDoc,doc } from "./conexion.js";
 // Almacenamiento de forma local para la información del usuario
 document.addEventListener('DOMContentLoaded', (event) => {
   const storedCredentials = localStorage.getItem('authCredentials');
@@ -19,23 +19,41 @@ document.addEventListener('DOMContentLoaded', (event) => {
         const inpais = document.getElementById('inpais').value;
         const postal = document.getElementById('postal').value;
         const uid = credentials.user.uid;  // Obtén el UID del usuario
-      
+        
         try {
-            // Utiliza setDoc con el UID del usuario
             const userRef = doc(db, "users", uid);
-            await setDoc(userRef, {
-                correo: correo,
-                contra: contra,
-                direccion: direccion,
-                ciudad: ciudad,
-                inpais: inpais,
-                postal: postal
-            });
-            console.log("Document written with ID: ", uid);
-            
-            
+            const docSnap = await getDoc(userRef);
+
+            if (docSnap.exists()) {
+                // El documento ya existe, pregunta al usuario si desea actualizarlo
+                const confirmacion = confirm("El usuario ya existe. ¿Deseas actualizar la información?");
+                if (confirmacion) {
+                    await setDoc(userRef, {
+                        correo: correo,
+                        contra: contra,
+                        direccion: direccion,
+                        ciudad: ciudad,
+                        inpais: inpais,
+                        postal: postal
+                    });
+                    console.log("Document updated with ID: ", uid);
+                } else {
+                    console.log("Actualización cancelada.");
+                }
+            } else {
+                // El documento no existe, crea uno nuevo
+                await setDoc(userRef, {
+                    correo: correo,
+                    contra: contra,
+                    direccion: direccion,
+                    ciudad: ciudad,
+                    inpais: inpais,
+                    postal: postal
+                });
+                console.log("Document created with ID: ", uid);
+            }
         } catch (e) {
-            console.error("Error adding document: ", e);
+            console.error("Error handling document: ", e);
         }
       }
       
@@ -46,8 +64,3 @@ document.addEventListener('DOMContentLoaded', (event) => {
       console.log('No se encontraron credenciales almacenadas.');
   }
 });
-
-
-
-
-

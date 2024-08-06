@@ -1,6 +1,6 @@
 import {initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js"
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js"
-import { getFirestore,collection, addDoc ,setDoc, doc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js"
+import { getFirestore,collection, addDoc ,setDoc, doc,getDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js"
 
 const firebaseConfig = {
   apiKey: "AIzaSyB1WbAHewTn8keQ1K-zhzIQznmc3K1zXww",
@@ -16,5 +16,5 @@ const firebaseConfig = {
   export const app = initializeApp(firebaseConfig);
   export const db = getFirestore(app);
   export const auth = getAuth(app);
-  export{addDoc,collection, setDoc,doc}
+  export{addDoc,collection, setDoc,doc, getDoc}
   //const analytics = getAnalytics(app);
