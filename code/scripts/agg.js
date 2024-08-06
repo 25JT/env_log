@@ -1,4 +1,5 @@
-import { db } from "./conexion.js";
+
+import { db, addDoc, collection } from "./conexion.js";
 
 
 
@@ -14,7 +15,7 @@ async function guardar(event) {
   const postal = document.getElementById('postal').value;
 
   try {
-      const docRef = await db.collection("users").add({
+      const docRef = await addDoc(collection(db, "users"),{
           correo: correo,
           contra: contra,
           direccion: direccion,
@@ -29,24 +30,3 @@ async function guardar(event) {
 }
 
 document.getElementById('enviar').addEventListener('click', guardar);
-
-
-
-
-
-
-
-
-
-
-
-// document.addEventListener('DOMContentLoaded', () => {
-//   console.log("DOM cargado en agg");
-
-
-
-
-
-// });
-
-
